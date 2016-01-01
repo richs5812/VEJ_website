@@ -8,9 +8,32 @@ header h1 {
 	display: inline-block;
 }
 
+div {
+	clear: both;
+}
+
 section {
 	word-wrap: break-word;
 }
+
+h2 {
+	text-align: center;
+}
+
+img.center {
+    display: block;
+	max-width:100%;
+    border-style: ridge;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.floating-box {
+    display: inline-block;
+    margin: 1em 1em 1em 1em;
+    max-width: 20em;
+}
+
 /* drop-down-less nav
 ul.nav {
     list-style-type: none;
