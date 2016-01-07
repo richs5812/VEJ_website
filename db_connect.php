@@ -1,0 +1,12 @@
+<?php
+$host = "localhost";
+$db_name = "VEJ";
+$username = "vej";
+$password = "HopeHouse2015!";
+
+try {
+	$con = new PDO("mysql:host={$host};dbname={$db_name}", $username, $password);
+}catch(PDOException $exception){ //to handle connection error
+	echo "Connection error: " . $exception->getMessage();
+}
+?>

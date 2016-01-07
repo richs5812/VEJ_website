@@ -27,49 +27,49 @@
 
 <div class="img">
   <a target="_blank" href="images/2014_Events/12th_earth_day2.jpg">
-    <img src="images/2014_Events/12th_earth_day2.jpg" alt="Earth Day Photo">
+    <img src="images/2014_Events/12th_earth_day2.jpg" alt="Earth Day Photo" width="300" height="200">
   </a>
   <div class="desc">Anne Honhart (left) and friend speak of the need to protect Michigan's animals.</div>
 </div>
 
 <div class="img">
   <a target="_blank" href="images/2014_Events/12th_earth_day3.jpg">
-    <img src="images/2014_Events/12th_earth_day3.jpg" alt="Earth Day Photo">
+    <img src="images/2014_Events/12th_earth_day3.jpg" alt="Earth Day Photo" width="300px" height="200">
   </a>
   <div class="desc">Some of the youngest participants are moving the soil to fill in the hole around the pussy willow tree they planted.</div>
 </div>
 
 <div class="img">
   <a target="_blank" href="images/2014_Events/12th_earth_day4.jpg">
-    <img src="images/2014_Events/12th_earth_day4.jpg" alt="Earth Day Photo">
+    <img src="images/2014_Events/12th_earth_day4.jpg" alt="Earth Day Photo" width="300" height="200">
   </a>
   <div class="desc">Pussy willow trees grow fast, and provide food for birds and butterflies.</div>
 </div>
 
 <div class="img">
   <a target="_blank" href="images/2014_Events/12th_earth_day5.jpg">
-    <img src="images/2014_Events/12th_earth_day5.jpg" alt="Earth Day Photo">
+    <img src="images/2014_Events/12th_earth_day5.jpg" alt="Earth Day Photo" width="300" height="200">
   </a>
   <div class="desc">Madonna University student Jerrick Breckenridge dug three very large holes for the pussy willow trees.</div>
 </div>
 
 <div class="img">
   <a target="_blank" href="images/2014_Events/12th_earth_day6.jpg">
-    <img src="images/2014_Events/12th_earth_day6.jpg" alt="Earth Day Photo">
+    <img src="images/2014_Events/12th_earth_day6.jpg" alt="Earth Day Photo" width="300" height="200">
   </a>
   <div class="desc">Adults, children, and presenters gather to bless the trees and each other.</div>
 </div>
 
 <div class="img">
   <a target="_blank" href="images/2014_Events/12th_earth_day7.jpg">
-    <img src="images/2014_Events/12th_earth_day7.jpg" alt="Earth Day Photo">
+    <img src="images/2014_Events/12th_earth_day7.jpg" alt="Earth Day Photo" width="300" height="200">
   </a>
   <div class="desc">David McCray of Hope Community of Christ Church and Sr. Ginny King of the VEJ board (on left) read prayers in the tree blessing ceremony.</div>
 </div>
 
 <div class="img">
   <a target="_blank" href="images/2014_Events/12th_earth_day8.jpg">
-    <img src="images/2014_Events/12th_earth_day8.jpg" alt="Earth Day Photo">
+    <img src="images/2014_Events/12th_earth_day8.jpg" alt="Earth Day Photo" width="300" height="200">
   </a>
   <div class="desc">We've got the water for the tree!</div>
 </div>
