@@ -23,7 +23,6 @@
 	<li>Awakening to God’s call to Earthkeeping (Lutheran/Christian), <a href="http://download.elca.org/ELCA%20Resource%20Repository/Awakening_To_Gods_Call_To_Earthkeeping.pdf" target="_blank">PDF available here</a></li>
 	<li>Evangelical Environmental Network - <a href="http://www.creationcare.org/" target="_blank">http://www.creationcare.org/</a> (also listed under education/study)</li>
 	<li><a href="http://imcw.org/Resources/ArticleDetail/articleType/ArticleView/articleId/58/How-to-Meditate-A-Guide-to-Formal-Sitting-Practice.aspx" target="_blank">How to Meditate</a></li>
-	<li><a href="http://imcw.org/Resources/ArticleDetail/articleType/ArticleView/articleId/58/How-to-Meditate-A-Guide-to-Formal-Sitting-Practice.aspx" target="_blank">How to Meditate</a></li>
 	<li><a href="https://educationforjustice.org/resources/prayer-climate-change" target="_blank">Education for Justice: Prayer for Climate Change</a></li>
 	<li><a href="https://educationforjustice.org/node/1356" target="_blank">Education for Justice: Native American Prayers for the Earth</a></li>
 	<li><a href="http://www.uua.org/environment/engagement/192858.shtml" target="_blank">Unitarian Universalist worship resources</a></li>

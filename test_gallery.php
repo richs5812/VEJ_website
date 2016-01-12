@@ -17,6 +17,7 @@
 </nav>
 
 <section>
+<input type="file" />
 <?php
 include 'db_connect.php';
 
