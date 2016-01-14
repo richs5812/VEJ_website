@@ -1,4 +1,5 @@
 <?php
+include 'db_connect.php';
 $target_dir = "uploads/";
 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 $uploadOk = 1;
@@ -35,10 +36,33 @@ if ($uploadOk == 0) {
     echo "Sorry, your file was not uploaded.";
 // if everything is ok, try to upload file
 } else {
+	/*
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
         echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
     } else {
         echo "Sorry, there was an error uploading your file.";
-    }
+    }*/
+
+	$image = fopen($_FILES['fileToUpload']['tmp_name'], 'rb');    
+  //  $image = file_get_contents($_FILES["fileToUpload"]["tmp_name"]));
+    $image_name = addslashes($_FILES["fileToUpload"]["name"]);
+    
+    $query = "INSERT INTO VEJ_pics (img, caption) VALUES (?, ?)";
+	$stmt = $con->prepare( $query );
+
+	//$gallery = '12th_earth_day';
+
+	//bind the id of the image you want to select
+	$stmt->bindParam(1, $image, PDO::PARAM_LOB);
+	$stmt->bindParam(2, $image_name);
+
+	$con->beginTransaction();
+	$stmt->execute();
+	$con->commit();
+/*
+	$sql = "INSERT INTO VEJ_pics (img, caption) VALUES ('{$image}', '{$image_name}')";
+	if (!mysql_query($sql)) { // Error handling
+    echo "Something went wrong! :(";
+    } */
 }
 ?> 
