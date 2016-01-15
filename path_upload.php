@@ -21,7 +21,7 @@ if (file_exists($target_file)) {
     $uploadOk = 0;
 }
 // Check file size
-if ($_FILES["fileToUpload"]["size"] > 500000) {
+if ($_FILES["fileToUpload"]["size"] > 6000000) {
     echo "Sorry, your file is too large.";
     $uploadOk = 0;
 }
@@ -45,13 +45,16 @@ if ($uploadOk == 0) {
 	//$image = fopen($_FILES['fileToUpload']['tmp_name'], 'rb');    
     $file_name = basename( $_FILES["fileToUpload"]["name"]);
     
-    $query = "INSERT INTO VEJ_pics (fileName) VALUES (?)";
+    $query = "INSERT INTO VEJ_pics (fileName, caption, gallery) VALUES (?, ?, ?)";
 	$stmt = $con->prepare( $query );
 
 	//$gallery = '12th_earth_day';
 
 	//bind the id of the image you want to select
 	$stmt->bindParam(1, $file_name);
+	$stmt->bindParam(2, $_POST[caption]);
+	$stmt->bindParam(3, $_POST[gallery]);
+
 
 	$con->beginTransaction();
 	$stmt->execute();
