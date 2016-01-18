@@ -21,7 +21,7 @@
 <form action="path_upload.php" method="post" enctype="multipart/form-data"><br />
     Select image to upload:
     <input type="file" name="fileToUpload" id="fileToUpload"><br /><br />
-    Gallery: <input type="text" name="gallery" id="gallery" value="12th Earth Day"><br /><br />
+    Gallery: <input type="text" name="gallery" id="gallery" value="2014 Generation Waking Up"><br /><br />
     Caption: <input type="text" name="caption" id="caption">
     <input type="submit" value="Upload Image" name="submit">
 </form>

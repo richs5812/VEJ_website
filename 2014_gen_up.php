@@ -23,7 +23,7 @@ include 'db_connect.php';
 $query = "select * from VEJ_pics WHERE gallery = ?";
 $stmt = $con->prepare( $query );
 
-$gallery = '12th Earth Day';
+$gallery = '2014 Generation Waking Up';
 
 //bind the id of the image you want to select
 $stmt->bindParam(1, $gallery);
@@ -39,10 +39,10 @@ if( $num ){
 	
 	echo '
 	<div class="img">
-		<a target="_blank" href="uploads/'.$row[fileName].'">
-		<img src="uploads/'.$row[fileName].'" width="300" />
+		<a target="_blank" href="uploads/'.$row["fileName"].'">
+		<img src="uploads/'.$row["fileName"].'" width="300" />
 		</a>
-		<div class="desc">'.$row[caption].'</div>
+		<div class="desc">'.$row["caption"].'</div>
 	</div>
 	';
 	
