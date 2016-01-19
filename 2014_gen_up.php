@@ -41,10 +41,12 @@ if( $num ){
 	<div class="img">
 		<a target="_blank" href="uploads/'.$row["fileName"].'">
 		<img src="uploads/'.$row["fileName"].'" width="300" />
-		</a>
-		<div class="desc">'.$row["caption"].'</div>
-	</div>
-	';
+		</a>';
+	
+	if ($row["caption"]!=NULL){
+		echo '<div class="desc">'.$row["caption"].'</div>';
+	}
+	echo'</div>';
 	
 	}
 }else{

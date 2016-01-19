@@ -23,7 +23,7 @@ include 'db_connect.php';
 $query = "select * from VEJ_pics WHERE gallery = ?";
 $stmt = $con->prepare( $query );
 
-$gallery = '12th Earth Day';
+$gallery = 'Princeton Alternative Break Volunteers - January 2015';
 
 //bind the id of the image you want to select
 $stmt->bindParam(1, $gallery);
@@ -35,7 +35,7 @@ $num = $stmt->rowCount();
 
 if( $num ){
 	//if found
-		while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+	while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 	
 	echo '
 	<div class="img">
