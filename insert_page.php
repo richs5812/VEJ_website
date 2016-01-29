@@ -20,14 +20,15 @@
 <?php
 include 'db_connect.php';
     
-$query = "INSERT INTO Pages (Title) VALUES (?)";
+$query = "INSERT INTO Pages (Title, Content) VALUES (?,?)";
 $stmt = $con->prepare( $query );
 
 $stmt->bindParam(1, $_POST["pageTitle"]);
+$stmt->bindParam(2, $_POST["pageContent"]);
 
 $con->beginTransaction();
 if ($stmt->execute() == TRUE) {
-  echo 'Page title inserted successfully.';
+  echo 'Page title and content inserted successfully.';
 } else {
 	echo "Error: <br>". $stmt->error;
 }$con->commit();

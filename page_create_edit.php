@@ -20,9 +20,12 @@
 
 <form action="insert_page.php" method="post">
 
-<label for="pageTitle">Page Title: </label><input type="text" name="pageTitle" id="pageTitle" />
+<br />
+<label for="pageTitle">Page Title: </label><input type="text" name="pageTitle" id="pageTitle" /><br /><br />
 
-<input type="submit" value="Create Page"/>
+<label for="OtherNotes">Page Content: </label><textarea id="pageContent" name="pageContent" ></textarea>
+
+<br /><br /><input type="submit" value="Create Page"/>
 </form>
 
 </section>
