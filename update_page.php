@@ -1,4 +1,4 @@
-<!--<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <link rel="stylesheet" href="styles.css">
@@ -16,25 +16,30 @@
 <?php include_once("nav.html"); ?>
 </nav>
 
-<section>-->
+<section>
 <?php
-//include 'db_connect.php';
+include 'db_connect.php';
+
+if ($_POST['page_id']==""){
+	require_once ('insert_page.php');
+	} else {
     
-$query = "INSERT INTO Pages (Title, Content) VALUES (?,?)";
+$query = "UPDATE Pages SET Title=?, Content=? WHERE page_id=?";
 $stmt = $con->prepare( $query );
 
 $stmt->bindParam(1, $_POST["pageTitle"]);
 $stmt->bindParam(2, $_POST["pageContent"]);
+$stmt->bindParam(3, $_POST["page_id"]);
 
 $con->beginTransaction();
 if ($stmt->execute() == TRUE) {
-  echo 'Page title and content inserted successfully.';
+  echo 'Page updated successfully.';
 } else {
 	echo "Error: <br>". $stmt->error;
 }$con->commit();
-
+}
 ?> 
-<!--
+
 </section>
 
 <footer>
@@ -43,4 +48,3 @@ Copyright 2015 Voices for Earth Justice, nonprofit 501(c)(3). All Rights Reserve
 
 </body>
 </html>
--->
