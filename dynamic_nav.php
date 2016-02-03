@@ -2,7 +2,7 @@
 <?php 
 include 'db_connect.php';
 
-$navQuery = "SELECT * FROM Pages ORDER BY Title ASC;";
+$navQuery = "SELECT * FROM Pages";
 $navStmt = $con->prepare( $navQuery );
 
 $con->beginTransaction();
@@ -10,17 +10,103 @@ $navStmt->execute();
 $con->commit();
 
 $navNum = $navStmt->rowCount();
-
+$pageArray = array();
+$parentArray = array();
+$noParentArray = array();
+$i=0;
 if( $navNum ){
 	//if found
 	while ($navRow = $navStmt->fetch(PDO::FETCH_ASSOC)){
+	$pageArray['page_id'][$i] = $navRow['page_id'];
+	//echo $pageArray['page_id'][$i];
+	//echo '<br>';
+	$pageArray['Parent_Page'][$i] = $navRow['Parent_Page'];
+	//does page have parent? if not, save to array
+	if ($navRow['Parent_Page']==NULL){
+		$parentArray['page_id'][$i] = $navRow['page_id'];
+		//$parentArray['page_id'][$i]= NULL;
+		//echo $subPageArray['page_id'][$i];
+		//echo 'pageID: '.$subPageArray['page_id'][$i].' <br>';
+		//echo 'parent page: '.$subPageArray['Parent_Page'][$i].'<br><br>';
+	}
+	$i++;
 	
-	echo '<li class="nav"><a href="page_display?page_id='.$navRow['page_id'].'">'.$navRow['Title'].'</a></li>';
+	}
+	$arrlength = count($pageArray['Parent_Page']);	
+	//echo $arrlength;
+	//does page have child? if so, display as dropdown. otherwise, display as list item
+	foreach ($parentArray['page_id'] as $parentPageID) {
+		$x=0;
+		//echo 'page '.$parentPageID[$x].' might have a child <br><br>';
+		//does parent page id match any 'Parent_Page' id's? if so, display as dropdown	
+		//echo '<div class="dropdown">
+    		//	<a href="page_display?page_id='.$parentPageID[$x].'" class="dropbtn">Link '.$x.'</a>';
+    			
+		//for($y = 0; $y < $arrlength; $y++) {
+   			// echo $pageArray['Parent_Page'][$y];
+   			// echo '<br>';
+			/*if ($parentPageID[$x] == $pageArray['Parent_Page'][$y]){
+				//echo 'page '.$parentPageID[$x].' has child '.$pageArray['page_id'][$y].' <br><br>';			
+			
+			}*/
+			if (in_array($parentPageID[$x], $pageArray['Parent_Page'])){
+				//echo 'page '.$parentPageID[$x].' has a child';
+				echo '<div class="dropdown">
+    			<a href="page_display?page_id='.$parentPageID[$x].'" class="dropbtn">Parent Link</a>
+    				 <div class="dropdown-content">';
+    				 for($y = 0; $y < $arrlength; $y++) {
+   						if ($parentPageID[$x] == $pageArray['Parent_Page'][$y]){
+							echo '<a href="page_display?page_id='.$pageArray['page_id'][$y].'">Child Link</a>';			
+						}
+			}
+				echo '</div></div>';
+			} else {
+				echo '<li class="nav"><a href="page_display?page_id='.$parentPageID[$x].'">Link</a></li>';
+			}
+		//}
+		//echo '</div>';
+		$x++;
+		
+	}
+/* <div class="dropdown">
+    <a href="index.php" class="dropbtn">Home</a>
+   <div class="dropdown-content">
+      <a href="about.php">About</a>
+      <a href="faith_statements.php">Faith Statements</a>
+      <a href="board_members.php">Board Members</a>
+    </div>
+  </div>*/
+	
+	
+	/*
+	$x=0;
+	foreach ($parentArray as $parent) {
+		foreach ($subPageArray as $subPage) {
+			if ($subPage['page_id'][$x] == $parent['page_id']){
+				echo '<div class="dropdown">
+    					<a href="index.php" class="dropbtn">'.$parent['page_id'].'</a>
+   							<div class="dropdown-content">
+    							<a href="about.php">About</a>
+								<a href="faith_statements.php">Faith Statements</a>
+								<a href="board_members.php">Board Members</a>
+    						</div>
+    					</div>';
+				
+								
+			}
+		}
+	
+	}*/
+	
+	
+	
+	
+	//echo '<li class="nav"><a href="page_display?page_id='.$navRow['page_id'].'">'.$navRow['Title'].'</a></li>';
 	
 
 	}
 	
-}else{
+else{
 	echo 'no results';
 }
 
