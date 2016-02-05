@@ -24,12 +24,14 @@ if ($_POST['page_id']==""){
 	require_once ('insert_page.php');
 	} else {
     
-$query = "UPDATE Pages SET Title=?, Content=? WHERE page_id=?";
+$query = "UPDATE Pages SET Title=?, Content=?, Parent_Page=? WHERE page_id=?";
 $stmt = $con->prepare( $query );
 
 $stmt->bindParam(1, $_POST["pageTitle"]);
 $stmt->bindParam(2, $_POST["pageContent"]);
-$stmt->bindParam(3, $_POST["page_id"]);
+$stmt->bindParam(3, $_POST["ParentPage"]);
+$stmt->bindParam(4, $_POST["page_id"]);
+
 
 $con->beginTransaction();
 if ($stmt->execute() == TRUE) {

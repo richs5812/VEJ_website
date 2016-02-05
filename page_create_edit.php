@@ -14,6 +14,7 @@
 
 <nav>
 <?php include_once("dynamic_nav.php"); ?>
+<?php include_once("nav.html"); ?>
 </nav>
 
 <section>
@@ -85,9 +86,24 @@ $pageRow = $pageStmt->fetch(PDO::FETCH_ASSOC);
 
 echo '<input type="hidden" name="page_id" value="' .$pageRow["page_id"]. '" />
 
-<label for="pageTitle">Page Title: </label><input type="text" name="pageTitle" id="pageTitle" value="'.$pageRow["Title"].'" /><br /><br />
+<label for="pageTitle">Page Title: </label><input type="text" name="pageTitle" id="pageTitle" value="'.$pageRow["Title"].'" /><br /><br />';
 
-<label for="OtherNotes">Page Content: </label><textarea id="pageContent" name="pageContent" rows="40" cols="120" >'.$pageRow["Content"].'</textarea>
+//display parent page in drop down menu
+	echo 'Parent Page: <select name="ParentPage">
+			<option value="">No Parent</option>';
+	$parentPageSql = 'SELECT page_id, Parent_Page, Title FROM Pages';
+    foreach ($con->query($parentPageSql) as $parentPageRow) {
+    	if ($pageRow["Parent_Page"]==$parentPageRow['page_id']){
+    		$selected = 'selected';
+    	} else {
+    		$selected = NULL;
+    	}
+        echo '<option value='.$parentPageRow['page_id'].' '.$selected.'>'.$parentPageRow['Title'].'</option>';
+    }
+    echo '</select><br><br>';
+	//end parent page drop down menu
+
+echo '<label for="OtherNotes">Page Content: </label><textarea id="pageContent" name="pageContent" rows="20" cols="120" >'.$pageRow["Content"].'</textarea>
 
 <br /><br />';
 

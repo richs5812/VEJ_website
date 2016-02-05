@@ -45,9 +45,9 @@ if( $num ){
 <nav>
 <?php include_once("nav.html"); ?>
 </nav>
-
+<section>
 <?php echo $content;?>
-
+</section>
 <footer>
 Copyright 2015 Voices for Earth Justice, nonprofit 501(c)(3). All Rights Reserved.
 </footer>
