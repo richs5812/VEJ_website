@@ -91,9 +91,9 @@ echo '<input type="hidden" name="page_id" value="' .$pageRow["page_id"]. '" />
 //display parent page in drop down menu
 	echo 'Parent Page: <select name="ParentPage">
 			<option value="">No Parent</option>';
-	$parentPageSql = 'SELECT page_id, Parent_Page, Title FROM Pages';
+	$parentPageSql = 'SELECT page_id, ParentPage, Title FROM Pages';
     foreach ($con->query($parentPageSql) as $parentPageRow) {
-    	if ($pageRow["Parent_Page"]==$parentPageRow['page_id']){
+    	if ($pageRow["ParentPage"]==$parentPageRow['page_id']){
     		$selected = 'selected';
     	} else {
     		$selected = NULL;
@@ -103,14 +103,14 @@ echo '<input type="hidden" name="page_id" value="' .$pageRow["page_id"]. '" />
     echo '</select><br><br>';
 	//end parent page drop down menu
 
-echo '<label for="OtherNotes">Page Content: </label><textarea id="pageContent" name="pageContent" rows="20" cols="120" >'.$pageRow["Content"].'</textarea>
+echo '<label for="OtherNotes">Page Content: </label><textarea id="pageContent" name="pageContent" rows="20" cols="120" >'.$pageRow["Content"].'</textarea><br><br>';
 
-<br /><br />';
 
 if ($_POST["page_id"] == ""){
-	echo '<input type="submit" value="Create Page"/>';
+	echo '<br /><br /><input type="submit" value="Create Page"/>';
 } else {
-	echo '<input type="submit" value="Update Page"/>';
+	echo '<label for="pageSlug">Page Slug for Link: </label><input type="text" name="pageSlug" id="pageSlug" value="'.$pageRow["Slug"].'" /><br /><br />
+<input type="submit" value="Update Page"/>';
 }
 echo '</form>';
 ?>

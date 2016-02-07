@@ -19,18 +19,30 @@
 <section>-->
 <?php
 //include 'db_connect.php';
+
+//allow null ParentPage value
+if ($_POST["ParentPage"] == "")
+{
+	$parentPage = NULL;
+} else {
+	$parentPage = $_POST["ParentPage"];
+}
+
+$slug = str_replace(" ","-",$_POST["pageTitle"]);
     
-$query = "INSERT INTO Pages (Title, Content) VALUES (?,?)";
+$query = "INSERT INTO Pages (Title, Content, ParentPage, Slug) VALUES (?,?,?, ?)";
 $stmt = $con->prepare( $query );
 
 $stmt->bindParam(1, $_POST["pageTitle"]);
 $stmt->bindParam(2, $_POST["pageContent"]);
+$stmt->bindParam(3, $parentPage);
+$stmt->bindParam(4, $slug);
 
 $con->beginTransaction();
 if ($stmt->execute() == TRUE) {
-  echo 'Page title and content inserted successfully.';
+  echo 'Page created successfully.';
 } else {
-	echo "Error: <br>". $stmt->error;
+	print_r($stmt->errorInfo());
 }$con->commit();
 
 ?> 

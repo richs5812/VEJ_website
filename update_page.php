@@ -24,20 +24,29 @@ if ($_POST['page_id']==""){
 	require_once ('insert_page.php');
 	} else {
     
-$query = "UPDATE Pages SET Title=?, Content=?, Parent_Page=? WHERE page_id=?";
+//allow null ParentPage value
+if ($_POST["ParentPage"] == "")
+{
+	$parentPage = NULL;
+} else {
+	$parentPage = $_POST["ParentPage"];
+}
+
+$query = "UPDATE Pages SET Title=?, Content=?, ParentPage=?, Slug=? WHERE page_id=?";
 $stmt = $con->prepare( $query );
 
 $stmt->bindParam(1, $_POST["pageTitle"]);
 $stmt->bindParam(2, $_POST["pageContent"]);
-$stmt->bindParam(3, $_POST["ParentPage"]);
-$stmt->bindParam(4, $_POST["page_id"]);
+$stmt->bindParam(3, $parentPage);
+$stmt->bindParam(4, $_POST["pageSlug"]);
+$stmt->bindParam(5, $_POST["page_id"]);
 
 
 $con->beginTransaction();
 if ($stmt->execute() == TRUE) {
   echo 'Page updated successfully.';
 } else {
-	echo "Error: <br>". $stmt->error;
+	print_r($stmt->errorInfo());
 }$con->commit();
 }
 ?> 
