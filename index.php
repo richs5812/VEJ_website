@@ -8,7 +8,7 @@ if (!isset($_GET['Slug']))
 	$slug = $_GET['Slug'];
 }
 
-$query = "select Title, Content from Pages WHERE Slug = ?";
+$query = "select Title, Content, Content2, Template, GalleryName from Pages WHERE Slug = ?";
 $stmt = $con->prepare( $query );
 
 $stmt->bindParam(1, $slug);
@@ -22,10 +22,11 @@ if( $num ){
 	
 	$content = $pageRow["Content"];
 	$title = $pageRow["Title"];
+	$content2 = $pageRow["Content2"];
+	$template = $pageRow["Template"];
+	$galleryName = $pageRow["GalleryName"];
 
-	}
-	
-	
+	}		
 	
 }else{
 	echo 'no results';
@@ -54,7 +55,47 @@ if( $num ){
 </nav>
 <section>
 
-<?php echo $content;?>
+<?php
+
+echo $content;
+
+if ($template == 'Gallery'){
+	$galleryQuery = "select * from VEJ_pics WHERE gallery = ?";
+	$galleryStmt = $con->prepare( $galleryQuery );
+
+//bind the id of the image you want to select
+$galleryStmt->bindParam(1, $galleryName);
+$galleryStmt->execute();
+
+//to verify if a record is found
+$galleryNum = $galleryStmt->rowCount();
+//echo $num;
+
+if( $galleryNum ){
+	//if found
+	while ($galleryRow = $galleryStmt->fetch(PDO::FETCH_ASSOC)){
+	
+	echo '
+	<div class="img">';
+		//<a target="_blank" href="uploads/'.$row["fileName"].'">
+		echo '<a target="_blank" href="slideshow.php?filename='.$galleryRow["fileName"].'&gallery='.$galleryName.'">';
+		echo '<img src="uploads/'.$galleryRow["fileName"].'" width="300" />
+		</a>';
+	
+	if ($galleryRow["caption"]!=NULL){
+		echo '<div class="desc">'.$galleryRow["caption"].'</div>';
+	}
+	echo'</div>';
+	
+	}
+}else{
+	//if no image found with the given id,
+	//load/query your default image here
+}
+	echo $content2;
+}
+
+?>
 
 </section>
 <footer>

@@ -21,7 +21,7 @@
 
 <!--start drop down menu-->
 <br />
-<form id="dropDownMenu" action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
+<form id="dropDownMenu" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
 <select class="dropDown" name="page_id" onchange="change()">
 <option value="">New Page</option>
 
@@ -62,6 +62,7 @@ function change(){
 }
 </script>
 
+
 </form>
 <!--end drop down menu-->
 
@@ -82,6 +83,7 @@ $pageStmt->execute();
 $con->commit();
 
 $pageRow = $pageStmt->fetch(PDO::FETCH_ASSOC);
+$title=$pageRow["Title"];
 
 
 echo '<input type="hidden" name="page_id" value="' .$pageRow["page_id"]. '" />
@@ -102,9 +104,45 @@ echo '<input type="hidden" name="page_id" value="' .$pageRow["page_id"]. '" />
     }
     echo '</select><br><br>';
 	//end parent page drop down menu
+	
+	//display template options in drop down menu
+	echo 'Page Template: <select id="Template" onchange="leaveChange()" name="Template" >';
+	$templageSql = 'SELECT TemplateName FROM Templates';
+    foreach ($con->query($templageSql) as $templateRow) {
+    	if ($pageRow["Template"]==$templateRow['TemplateName']){
+    		$selected = 'selected';
+    	} else {
+    		$selected = NULL;
+    	}
+        echo '<option value='.$templateRow['TemplateName'].' '.$selected.'>'.$templateRow['TemplateName'].'</option>';
+    }
+    echo '</select><br><br>';
+	//end template options drop down menu
 
-echo '<label for="OtherNotes">Page Content: </label><textarea id="pageContent" name="pageContent" rows="20" cols="120" >'.$pageRow["Content"].'</textarea><br><br>';
+echo '<label for="pageContent">Page Content: </label><textarea id="pageContent" name="pageContent" rows="20" cols="120" >'.$pageRow["Content"].'</textarea><br><br>';
 
+//echo '<div id="message"></div>';
+
+$content2 = $pageRow["Content2"];
+
+if ($pageRow["Template"]=='Gallery'){
+	//display gallery choices in drop down menu
+	echo 'Select gallery name: <select name="GalleryName">';
+	$galleryNameSql = 'SELECT DISTINCT gallery FROM VEJ_pics';
+    foreach ($con->query($galleryNameSql) as $galleryNameRow) {
+    	if ($pageRow["GalleryName"]==$galleryNameRow['gallery']){
+    		$selected = 'selected';
+    	} else {
+    		$selected = NULL;
+    	}
+        echo '<option value="'.$galleryNameRow['gallery'].'" '.$selected.'>'.$galleryNameRow['gallery'].'</option>';
+    }
+    echo '</select><br><br>';
+	//end parent page drop down menu
+	echo '<div id="message"><label for="pageContentDos">Page Content Block 2: </label><textarea id="pageContentDos" name="pageContentDos" rows="10" cols="120" >'.$content2.'</textarea><br><br></div>';
+} else {
+	echo '<div id="message"></div>';
+}
 
 if ($_POST["page_id"] == ""){
 	echo '<br /><br /><input type="submit" value="Create Page"/>';
@@ -112,6 +150,18 @@ if ($_POST["page_id"] == ""){
 	echo '<label for="pageSlug">Page Slug for Link: </label><input type="text" name="pageSlug" id="pageSlug" value="'.$pageRow["Slug"].'" /><br /><br />
 <input type="submit" value="Update Page"/>';
 }
+?>
+<script>
+function leaveChange() {
+    if (document.getElementById("Template").value != "Gallery"){
+        document.getElementById("message").innerHTML = " ";
+    }     
+    else{
+        document.getElementById("message").innerHTML = "<label for=\"pageContentDos\">Page Content Block 2: </label><textarea id=\"pageContentDos\" name=\"pageContentDos\" rows=\"10\" cols=\"120\" ><?php echo $content2;?></textarea><br><br>";
+    }        
+}
+</script>
+<?php
 echo '</form>';
 ?>
 

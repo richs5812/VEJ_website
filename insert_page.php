@@ -30,13 +30,16 @@ if ($_POST["ParentPage"] == "")
 
 $slug = str_replace(" ","-",$_POST["pageTitle"]);
     
-$query = "INSERT INTO Pages (Title, Content, ParentPage, Slug) VALUES (?,?,?, ?)";
+$query = "INSERT INTO Pages (Title, Content, ParentPage, Slug, Template, Content2, GalleryName) VALUES (?,?,?,?,?,?,?)";
 $stmt = $con->prepare( $query );
 
 $stmt->bindParam(1, $_POST["pageTitle"]);
 $stmt->bindParam(2, $_POST["pageContent"]);
 $stmt->bindParam(3, $parentPage);
 $stmt->bindParam(4, $slug);
+$stmt->bindParam(5, $_POST["Template"]);
+$stmt->bindParam(6, $_POST["pageContentDos"]);
+$stmt->bindParam(7, $_POST["GalleryName"]);
 
 $con->beginTransaction();
 if ($stmt->execute() == TRUE) {

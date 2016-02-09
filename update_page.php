@@ -32,14 +32,17 @@ if ($_POST["ParentPage"] == "")
 	$parentPage = $_POST["ParentPage"];
 }
 
-$query = "UPDATE Pages SET Title=?, Content=?, ParentPage=?, Slug=? WHERE page_id=?";
+$query = "UPDATE Pages SET Title=?, Content=?, ParentPage=?, Slug=?, Template=?, Content2=?, GalleryName=? WHERE page_id=?";
 $stmt = $con->prepare( $query );
 
 $stmt->bindParam(1, $_POST["pageTitle"]);
 $stmt->bindParam(2, $_POST["pageContent"]);
 $stmt->bindParam(3, $parentPage);
 $stmt->bindParam(4, $_POST["pageSlug"]);
-$stmt->bindParam(5, $_POST["page_id"]);
+$stmt->bindParam(5, $_POST["Template"]);
+$stmt->bindParam(6, $_POST["pageContentDos"]);
+$stmt->bindParam(7, $_POST["GalleryName"]);
+$stmt->bindParam(8, $_POST["page_id"]);
 
 
 $con->beginTransaction();
