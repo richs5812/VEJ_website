@@ -4,6 +4,20 @@
 <link rel="stylesheet" href="styles.css">
 <title>Voices for Earth Justice - Create/Edit page</title>
 <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- date picker-->
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <link rel="stylesheet" href="/resources/demos/style.css">
+
+  <script>
+  $(function() {
+    $( "#pageDatePicker" ).datepicker({dateFormat: "mm/dd/y"});
+  });
+  </script>
+  <!-- end date picker-->
+  
 </head>
 <body>
 
@@ -70,6 +84,8 @@ function change(){
 
 <br />
 <?php
+//format dates for MySQL from input format
+date_default_timezone_set('America/Detroit');
 
 include 'db_connect.php';
 
@@ -83,8 +99,16 @@ $pageStmt->execute();
 $con->commit();
 
 $pageRow = $pageStmt->fetch(PDO::FETCH_ASSOC);
-$title=$pageRow["Title"];
 
+if (!isset ($pageRow["page_id"])){
+	$pageDate = date("m/d/y");
+	$pageHour = date("G");
+	$pageMinute = date("i");
+} else{
+	$pageDate = date("m/d/y", strtotime($pageRow["pubDate"]));
+	$pageHour = date("G", strtotime($pageRow["pubDate"]));
+	$pageMinute = date("i", strtotime($pageRow["pubDate"]));
+}
 
 echo '<input type="hidden" name="page_id" value="' .$pageRow["page_id"]. '" />
 
@@ -118,6 +142,12 @@ echo '<input type="hidden" name="page_id" value="' .$pageRow["page_id"]. '" />
     }
     echo '</select><br><br>';
 	//end template options drop down menu
+	
+echo '<label for="pageDatePicker">Page Date: </label><input type="text" name="pageDate" id="pageDatePicker" value="'.$pageDate.'">';
+
+echo '<label for="pageTimeOfDayHour">Time of Day: Hour (0-24): </label><input type="text" name="pageTimeOfDayHour" id="pageTimeOfDayHour" value="'.$pageHour.'">';
+
+echo '<label for="pageTimeOfDayMinute">Minute: </label><input type="text" name="pageTimeOfDayMinute" id="pageTimeOfDayMinute" value="'.$pageMinute.'"><br><br>';
 
 echo '<label for="pageContent">Page Content: </label><textarea id="pageContent" name="pageContent" rows="20" cols="120" >'.$pageRow["Content"].'</textarea><br><br>';
 
@@ -139,6 +169,7 @@ if ($pageRow["Template"]=='Gallery'){
     }
     echo '</select><br><br>';
 	//end parent page drop down menu
+
 	echo '<div id="message"><label for="pageContentDos">Page Content Block 2: </label><textarea id="pageContentDos" name="pageContentDos" rows="10" cols="120" >'.$content2.'</textarea><br><br></div>';
 } else {
 	echo '<div id="message"></div>';

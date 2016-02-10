@@ -57,7 +57,7 @@ if( $num ){
 
 <?php
 
-echo $content;
+echo '<div>'.$content.'</div>';
 
 if ($template == 'Gallery'){
 	$galleryQuery = "select * from VEJ_pics WHERE gallery = ?";
@@ -92,7 +92,7 @@ if( $galleryNum ){
 	//if no image found with the given id,
 	//load/query your default image here
 }
-	echo $content2;
+	echo '<div>'.$content2.'</div>';
 }
 
 ?>
