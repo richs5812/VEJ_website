@@ -87,6 +87,8 @@ function change(){
 //format dates for MySQL from input format
 date_default_timezone_set('America/Detroit');
 
+$dropDownPath = 'galleryDropDown.php';
+
 include 'db_connect.php';
 
 $pageQuery = "select * from Pages WHERE page_id = ?";
@@ -101,10 +103,12 @@ $con->commit();
 $pageRow = $pageStmt->fetch(PDO::FETCH_ASSOC);
 
 if (!isset ($pageRow["page_id"])){
+	$published = 'Publish';
 	$pageDate = date("m/d/y");
 	$pageHour = date("G");
 	$pageMinute = date("i");
 } else{
+	$published = 'Published';
 	$pageDate = date("m/d/y", strtotime($pageRow["pubDate"]));
 	$pageHour = date("G", strtotime($pageRow["pubDate"]));
 	$pageMinute = date("i", strtotime($pageRow["pubDate"]));
@@ -143,7 +147,18 @@ echo '<input type="hidden" name="page_id" value="' .$pageRow["page_id"]. '" />
     echo '</select><br><br>';
 	//end template options drop down menu
 	
-echo '<label for="pageDatePicker">Page Date: </label><input type="text" name="pageDate" id="pageDatePicker" value="'.$pageDate.'">';
+    if ($pageRow['IncludeInNav']!='1'){
+	echo '<label for="includeInNav">Include in Navigation Menu: </label>
+			<input type="hidden" name="includeInNav" value="0" />
+			<input type="checkbox" name="includeInNav" id="includeInNav" value="1" /><br><br>';
+} else {
+	echo '<label for="includeInNav">Include in Navigation Menu: </label>
+			<input type="hidden" name="includeInNav" value="0" />
+			<input type="checkbox" name="includeInNav" id="includeInNav" value="1" checked/><br><br>';
+}	
+
+	
+echo '<label for="pageDatePicker">'.$published.' Date: </label><input type="text" name="pageDate" id="pageDatePicker" value="'.$pageDate.'">';
 
 echo '<label for="pageTimeOfDayHour">Time of Day: Hour (0-24): </label><input type="text" name="pageTimeOfDayHour" id="pageTimeOfDayHour" value="'.$pageHour.'">';
 
@@ -156,6 +171,10 @@ echo '<label for="pageContent">Page Content: </label><textarea id="pageContent" 
 $content2 = $pageRow["Content2"];
 
 if ($pageRow["Template"]=='Gallery'){
+	echo '<div id="message">';
+} else {
+	echo '<div id="message" style="display: none;">';
+}
 	//display gallery choices in drop down menu
 	echo 'Select gallery name: <select name="GalleryName">';
 	$galleryNameSql = 'SELECT DISTINCT gallery FROM VEJ_pics';
@@ -169,11 +188,9 @@ if ($pageRow["Template"]=='Gallery'){
     }
     echo '</select><br><br>';
 	//end parent page drop down menu
-
-	echo '<div id="message"><label for="pageContentDos">Page Content Block 2: </label><textarea id="pageContentDos" name="pageContentDos" rows="10" cols="120" >'.$content2.'</textarea><br><br></div>';
-} else {
-	echo '<div id="message"></div>';
-}
+	
+	echo'<label for="pageContentDos">Page Content Block 2: </label><textarea id="pageContentDos" name="pageContentDos" rows="10" cols="120" >'.$content2.'</textarea><br><br></div>';
+	echo '</div>';
 
 if ($_POST["page_id"] == ""){
 	echo '<br /><br /><input type="submit" value="Create Page"/>';
@@ -185,10 +202,10 @@ if ($_POST["page_id"] == ""){
 <script>
 function leaveChange() {
     if (document.getElementById("Template").value != "Gallery"){
-        document.getElementById("message").innerHTML = " ";
+        document.getElementById("message").style.display = 'none';
     }     
     else{
-        document.getElementById("message").innerHTML = "<label for=\"pageContentDos\">Page Content Block 2: </label><textarea id=\"pageContentDos\" name=\"pageContentDos\" rows=\"10\" cols=\"120\" ><?php echo $content2;?></textarea><br><br>";
+        document.getElementById("message").style.display = 'block';
     }        
 }
 </script>

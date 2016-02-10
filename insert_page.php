@@ -30,7 +30,7 @@ if ($_POST["ParentPage"] == "")
 
 $slug = str_replace(" ","-",$_POST["pageTitle"]);
     
-$query = "INSERT INTO Pages (Title, Content, ParentPage, Slug, Template, Content2, GalleryName, pubDate) VALUES (?,?,?,?,?,?,?,?)";
+$query = "INSERT INTO Pages (Title, Content, ParentPage, Slug, Template, Content2, GalleryName, pubDate, IncludeInNav, SqlDate) VALUES (?,?,?,?,?,?,?,?,?,?)";
 $stmt = $con->prepare( $query );
 
 $stmt->bindParam(1, $_POST["pageTitle"]);
@@ -41,6 +41,9 @@ $stmt->bindParam(5, $_POST["Template"]);
 $stmt->bindParam(6, $_POST["pageContentDos"]);
 $stmt->bindParam(7, $_POST["GalleryName"]);
 $stmt->bindParam(8, $rssDate);
+$stmt->bindParam(9, $_POST["includeInNav"]);
+$stmt->bindParam(10, $sqlFormattedPageDate);
+
 
 $con->beginTransaction();
 if ($stmt->execute() == TRUE) {

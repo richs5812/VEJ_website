@@ -24,6 +24,12 @@ date_default_timezone_set('America/Detroit');
 
 $rssDate = ''.date("D, d M Y", strtotime($_POST['pageDate'])).' '.$_POST['pageTimeOfDayHour'].':'.$_POST['pageTimeOfDayMinute'].':00 EST';
 
+if($_POST['pageDate']!=NULL){
+	$sqlFormattedPageDate = date("Y-m-d", strtotime($_POST['pageDate']));
+	} else {
+	$sqlFormattedPageDate = NULL;
+	}
+
 if ($_POST['page_id']==""){
 	require_once ('insert_page.php');
 	} else {
@@ -36,7 +42,7 @@ if ($_POST["ParentPage"] == "")
 	$parentPage = $_POST["ParentPage"];
 }
 
-$query = "UPDATE Pages SET Title=?, Content=?, ParentPage=?, Slug=?, Template=?, Content2=?, GalleryName=?, pubDate=? WHERE page_id=?";
+$query = "UPDATE Pages SET Title=?, Content=?, ParentPage=?, Slug=?, Template=?, Content2=?, GalleryName=?, pubDate=?, IncludeInNav=?, SqlDate=? WHERE page_id=?";
 $stmt = $con->prepare( $query );
 
 $stmt->bindParam(1, $_POST["pageTitle"]);
@@ -47,8 +53,9 @@ $stmt->bindParam(5, $_POST["Template"]);
 $stmt->bindParam(6, $_POST["pageContentDos"]);
 $stmt->bindParam(7, $_POST["GalleryName"]);
 $stmt->bindParam(8, $rssDate);
-$stmt->bindParam(9, $_POST["page_id"]);
-
+$stmt->bindParam(9, $_POST["includeInNav"]);
+$stmt->bindParam(10, $sqlFormattedPageDate);
+$stmt->bindParam(11, $_POST["page_id"]);
 
 $con->beginTransaction();
 if ($stmt->execute() == TRUE) {

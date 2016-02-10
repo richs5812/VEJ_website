@@ -1,4 +1,7 @@
 <?php
+//format dates for MySQL from input format
+date_default_timezone_set('America/Detroit');
+
 include 'db_connect.php';
 
 if (!isset($_GET['Slug']))
@@ -57,6 +60,51 @@ if( $num ){
 
 <?php
 
+if ($title == 'Galleries'){
+
+	$galleriesQuery = "SELECT * from Pages WHERE Template = ? ORDER BY SqlDate DESC";
+	$galleriesStmt = $con->prepare( $galleriesQuery );
+	$statementVar = 'Gallery';
+	//bind the id of the image you want to select
+	$galleriesStmt->bindParam(1, $statementVar);
+	$galleriesStmt->execute();
+
+	while ($galleriesRow = $galleriesStmt->fetch(PDO::FETCH_ASSOC)){
+	$prettyDate = date("F j, Y", strtotime($galleriesRow['pubDate']));
+
+		echo '<h1>'.$galleriesRow['Title'].'</h1>
+		<p>Published: '.$prettyDate.'</p>
+		<div>'.$galleriesRow['Content'].'</div>';
+	
+		$galleryQuery = "select * from VEJ_pics WHERE gallery = ?";
+		$galleryStmt = $con->prepare( $galleryQuery );
+
+		//bind the id of the image you want to select
+		$galleryStmt->bindParam(1, $galleriesRow['GalleryName']);
+		$galleryStmt->execute();
+
+		while ($galleryRow = $galleryStmt->fetch(PDO::FETCH_ASSOC)){
+			
+			echo '
+			<div class="img">';
+				//<a target="_blank" href="uploads/'.$row["fileName"].'">
+				echo '<a target="_blank" href="slideshow.php?filename='.$galleryRow["fileName"].'&gallery='.$galleriesRow['GalleryName'].'">';
+				echo '<img src="uploads/'.$galleryRow["fileName"].'" width="300" />
+				</a>';
+	
+			if ($galleryRow["caption"]!=NULL){
+				echo '<div class="desc">'.$galleryRow["caption"].'</div>';
+			}
+			echo'</div>';
+	
+			}
+	
+	echo '<div>'.$galleriesRow['Content2'].'</div>';
+
+	}
+
+} else {
+
 echo '<div>'.$content.'</div>';
 
 if ($template == 'Gallery'){
@@ -94,7 +142,7 @@ if( $galleryNum ){
 }
 	echo '<div>'.$content2.'</div>';
 }
-
+}
 ?>
 
 </section>

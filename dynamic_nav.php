@@ -2,7 +2,7 @@
 <?php 
 include 'db_connect.php';
 
-$navQuery = "SELECT * FROM Pages ORDER BY MenuOrder ASC";
+$navQuery = "SELECT * FROM Pages WHERE IncludeInNav='1' ORDER BY MenuOrder ASC";
 $navStmt = $con->prepare( $navQuery );
 
 $con->beginTransaction();
