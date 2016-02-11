@@ -13,7 +13,7 @@
 </header>
 
 <nav>
-<?php include_once("nav.html"); ?>
+<?php include_once("dynamic_nav.php"); ?>
 </nav>
 
 <section>
@@ -29,10 +29,11 @@ if($_POST['pageDate']!=NULL){
 	} else {
 	$sqlFormattedPageDate = NULL;
 	}
+	
+$slugNoHyphens = str_replace(" - "," ",$_POST["pageTitle"]);
+$strippedSlug = preg_replace("/[^a-zA-Z0-9 ]/", "", $slugNoHyphens);
+$slug = str_replace(" ","-",$strippedSlug);
 
-if ($_POST['page_id']==""){
-	require_once ('insert_page.php');
-	} else {
     
 //allow null ParentPage value
 if ($_POST["ParentPage"] == "")
@@ -42,16 +43,28 @@ if ($_POST["ParentPage"] == "")
 	$parentPage = $_POST["ParentPage"];
 }
 
+//allow null GalleryName value
+if ($_POST["GalleryName"] == "")
+{
+	$galleryName = NULL;
+} else {
+	$galleryName = $_POST["GalleryName"];
+}
+//figure out whether to insert or update
+if ($_POST['page_id']==""){
+	require_once ('insert_page.php');
+	} else {
+
 $query = "UPDATE Pages SET Title=?, Content=?, ParentPage=?, Slug=?, Template=?, Content2=?, GalleryName=?, pubDate=?, IncludeInNav=?, SqlDate=? WHERE page_id=?";
 $stmt = $con->prepare( $query );
 
 $stmt->bindParam(1, $_POST["pageTitle"]);
 $stmt->bindParam(2, $_POST["pageContent"]);
 $stmt->bindParam(3, $parentPage);
-$stmt->bindParam(4, $_POST["pageSlug"]);
+$stmt->bindParam(4, $slug);
 $stmt->bindParam(5, $_POST["Template"]);
 $stmt->bindParam(6, $_POST["pageContentDos"]);
-$stmt->bindParam(7, $_POST["GalleryName"]);
+$stmt->bindParam(7, $galleryName);
 $stmt->bindParam(8, $rssDate);
 $stmt->bindParam(9, $_POST["includeInNav"]);
 $stmt->bindParam(10, $sqlFormattedPageDate);

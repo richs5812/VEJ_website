@@ -28,7 +28,6 @@
 
 <nav>
 <?php include_once("dynamic_nav.php"); ?>
-<?php include_once("nav.html"); ?>
 </nav>
 
 <section>
@@ -176,7 +175,8 @@ if ($pageRow["Template"]=='Gallery'){
 	echo '<div id="message" style="display: none;">';
 }
 	//display gallery choices in drop down menu
-	echo 'Select gallery name: <select name="GalleryName">';
+	echo 'Select gallery name: <select name="GalleryName">
+		<option value=""></option>';
 	$galleryNameSql = 'SELECT DISTINCT gallery FROM VEJ_pics';
     foreach ($con->query($galleryNameSql) as $galleryNameRow) {
     	if ($pageRow["GalleryName"]==$galleryNameRow['gallery']){

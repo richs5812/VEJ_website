@@ -54,7 +54,7 @@ if( $num ){
 </header>
 
 <nav>
-<?php include_once("nav.html"); ?>
+<?php include_once("dynamic_nav.php"); ?>
 </nav>
 <section>
 
@@ -72,7 +72,7 @@ if ($title == 'Galleries'){
 	while ($galleriesRow = $galleriesStmt->fetch(PDO::FETCH_ASSOC)){
 	$prettyDate = date("F j, Y", strtotime($galleriesRow['pubDate']));
 
-		echo '<h1>'.$galleriesRow['Title'].'</h1>
+		echo '<a href="'.$galleriesRow["Slug"].'"><h1>'.$galleriesRow['Title'].'</h1></a>
 		<p>Published: '.$prettyDate.'</p>
 		<div>'.$galleriesRow['Content'].'</div>';
 	

@@ -30,7 +30,8 @@ div {
 div.img {
     margin: 5px;
     border: 1px solid #ccc;
-    float: left;
+    /*float: left;*/
+    display: inline-block;
     width: 180px;
 }	
 

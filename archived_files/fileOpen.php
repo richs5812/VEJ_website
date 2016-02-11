@@ -13,7 +13,7 @@
 </header>
 
 <nav>
-<?php include_once("nav.html"); ?>
+<?php include_once("dynamic_nav.php"); ?>
 </nav>
 
 <section>
