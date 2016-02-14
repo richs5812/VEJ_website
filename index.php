@@ -108,7 +108,7 @@ if ($title == 'Galleries'){
 echo '<div>'.$content.'</div>';
 
 if ($template == 'Gallery'){
-	$galleryQuery = "select * from SlideshowPics WHERE gallery = ?";
+	$galleryQuery = "select * from Pics WHERE gallery = ?";
 	$galleryStmt = $con->prepare( $galleryQuery );
 
 //bind the id of the image you want to select
@@ -127,7 +127,7 @@ if( $galleryNum ){
 	<div class="img">';
 		//<a target="_blank" href="uploads/'.$row["fileName"].'">
 		echo '<a target="_blank" href="slideshow.php?filename='.$galleryRow["fileName"].'&gallery='.$galleryName.'">';
-		echo '<img src="slideshowPics/'.$galleryRow["fileName"].'" width="300" />
+		echo '<img src="slideshowPics/'.$galleryRow["picSlug"].'/'.$galleryRow["fileName"].'" width="300" />
 		</a>';
 	
 	if ($galleryRow["caption"]!=NULL){

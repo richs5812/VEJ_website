@@ -9,7 +9,7 @@
 
 <header>
 <img src="images/voices_logo_color 300.jpg" alt="VEJ logo">
-<h1>Events</h1>
+<h1>Upload Image(s)</h1>
 </header>
 
 <nav>
@@ -22,9 +22,34 @@
     Select image to upload:
    <!-- <input type="file" name="fileToUpload" id="fileToUpload" multiple><br /><br />-->
    <input name="filesToUpload[]" id="filesToUpload" type="file" multiple="" /><br /><br />
-    Gallery: <input type="text" name="gallery" id="gallery" value="" size="50"><br /><br />
+	Create New Gallery: <input type="text" name="newGalleryName" id="gallery" value="" size="50"><br /><br />
+<?php   	//display gallery choices in drop down menu
+	echo 'or add to existing gallery: <select id="existingGalleryName" name="existingGalleryName"">
+		<option value=""></option>';
+	$galleryNameSql = 'SELECT DISTINCT gallery FROM Pics';
+    foreach ($con->query($galleryNameSql) as $galleryNameRow) {
+    	if ($pageRow["GalleryName"]==$galleryNameRow['gallery']){
+    		$selected = 'selected';
+    	} else {
+    		$selected = NULL;
+    	}
+        echo '<option value="'.$galleryNameRow['gallery'].'" '.$selected.'>'.$galleryNameRow['gallery'].'</option>';
+    }
+    echo '</select><br><br>';
+	//end gallery choice drop down menu
+?>
     Caption: <input type="text" name="caption" id="caption">
     <input type="submit" value="Upload Image(s)" name="submit">
+<!--<script>
+function galleryNameChoice() {
+    if (document.getElementById("existingGalleryName").value != ""){
+        document.getElementById("newName").style.display = 'none';
+    }     
+    else{
+        document.getElementById("newName").style.display = 'block';
+    }        
+}
+</script>-->
 </form>
 
 </section>

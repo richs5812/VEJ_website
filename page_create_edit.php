@@ -86,7 +86,7 @@ function change(){
 //format dates for MySQL from input format
 date_default_timezone_set('America/Detroit');
 
-$dropDownPath = 'galleryDropDown.php';
+//$dropDownPath = 'galleryDropDown.php';
 
 include 'db_connect.php';
 
@@ -187,7 +187,7 @@ if ($pageRow["Template"]=='Gallery'){
         echo '<option value="'.$galleryNameRow['gallery'].'" '.$selected.'>'.$galleryNameRow['gallery'].'</option>';
     }
     echo '</select><br><br>';
-	//end parent page drop down menu
+	//end gallery choice drop down menu
 	
 	echo'<label for="pageContentDos">Page Content Block 2: </label><textarea id="pageContentDos" name="pageContentDos" rows="10" cols="120" >'.$content2.'</textarea><br><br></div>';
 	echo '</div>';

@@ -77,4 +77,6 @@ for($x = 0; $x < $parentArrLength; $x++) {
 ?>
 	<li class="nav"><a href="image_upload.php">Upload Image(s)</a></li>
     <li class="nav"><a href="page_create_edit.php">Insert/Update page</a></li>
+    <li class="nav"><a href="edit_gallery.php">Edit Gallery</a></li>
+    
 </ul>

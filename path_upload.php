@@ -20,10 +20,16 @@
 <?php
 include 'db_connect.php';
 
+if ($_POST["existingGalleryName"]==""){
+	$galleryName = $_POST["newGalleryName"];
+} else {
+	$galleryName = $_POST["existingGalleryName"];
+}
+echo 'Pic will be entered into gallery: '.$galleryName.'<br>';
+
 for($i=0; $i<count($_FILES['filesToUpload']['name']); $i++) {
 
-
-$slugNoHyphens = str_replace(" - "," ",$_POST["gallery"]);
+$slugNoHyphens = str_replace(" - "," ",$galleryName);
 $strippedSlug = preg_replace("/[^a-zA-Z0-9 ]/", "", $slugNoHyphens);
 $slug = str_replace(" ","-",$strippedSlug);
 
@@ -85,7 +91,7 @@ if ($uploadOk == 0) {
 	//bind the id of the image you want to select
 	$stmt->bindParam(1, $fileName);
 	$stmt->bindParam(2, $_POST["caption"]);
-	$stmt->bindParam(3, $_POST["gallery"]);
+	$stmt->bindParam(3, $galleryName);
 	$stmt->bindParam(4, $slug);
 
 
