@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <link rel="stylesheet" href="styles.css">
+<base href="/Sites/VEJ/">
 <title>Voices for Earth Justice - Gallery</title>
 <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -25,7 +26,7 @@
 
 include 'db_connect.php';
 
-$query = "select * from VEJ_pics WHERE gallery = ?";
+$query = "select * from Pics WHERE gallery = ?";
 $stmt = $con->prepare( $query );
 
 $gallery = $_GET["gallery"];
@@ -37,6 +38,10 @@ $stmt->execute();
 //to verify if a record is found
 $num = $stmt->rowCount();
 //echo $num;
+
+$slugNoHyphens = str_replace(" - "," ",$gallery);
+$strippedSlug = preg_replace("/[^a-zA-Z0-9 ]/", "", $slugNoHyphens);
+$slug = str_replace(" ","-",$strippedSlug);
 
 $imageArray = array();
 $i=0;
@@ -60,17 +65,17 @@ if( $num ){
 	
 	if ($key==0){
 	//echo '<a href="slideshow.php?filename='.$imageArray[$key-1].'&gallery='.$gallery.'">Click for previous photo</a>';
-	echo'	<img src="uploads/'.$_GET["filename"].'"/>
+	echo'	<img src="slideshowPics/'.$slug.'/'.$_GET["filename"].'"/>
 		</a>';
 	echo '<a href="slideshow.php?filename='.$imageArray[$key+1].'&gallery='.$gallery.'">Click for next photo</a>';
 	} elseif ($key==($count-1)){
 	echo '<a href="slideshow.php?filename='.$imageArray[$key-1].'&gallery='.$gallery.'">Click for previous photo</a>';
-	echo'	<img src="uploads/'.$_GET["filename"].'"/>
+	echo'	<img src="slideshowPics/'.$slug.'/'.$_GET["filename"].'"/>
 		</a>';
 	//echo '<a href="slideshow.php?filename='.$imageArray[$key+1].'&gallery='.$gallery.'">Click for next photo</a>';
 	} else {	
 	echo '<a href="slideshow.php?filename='.$imageArray[$key-1].'&gallery='.$gallery.'">Click for previous photo</a>';
-	echo'	<img src="uploads/'.$_GET["filename"].'"/>
+	echo'	<img src="slideshowPics/'.$slug.'/'.$_GET["filename"].'"/>
 		</a>';
 	echo '<a href="slideshow.php?filename='.$imageArray[$key+1].'&gallery='.$gallery.'">Click for next photo</a>';
 	}	

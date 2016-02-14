@@ -19,18 +19,19 @@
 <section>
 <?php
 include 'db_connect.php';
-$target_dir = "/Library/WebServer/Documents/Sites/VEJ/fullSizePics/";
-/*
-if(count($_FILES['filesToUpload']['name'])) {
-	foreach ($_FILES['filesToUpload']['name'] as $file) {
-	    
-		//do your upload stuff here
-		echo $file;
-		
-	}
-}*/
 
 for($i=0; $i<count($_FILES['filesToUpload']['name']); $i++) {
+
+
+$slugNoHyphens = str_replace(" - "," ",$_POST["gallery"]);
+$strippedSlug = preg_replace("/[^a-zA-Z0-9 ]/", "", $slugNoHyphens);
+$slug = str_replace(" ","-",$strippedSlug);
+
+$target_dir = '/Library/WebServer/Documents/Sites/VEJ/fullSizePics/'.$slug.'/';
+
+if (!file_exists($target_dir) && !is_dir($target_dir)) {
+    mkdir($target_dir, 0755);         
+} 
 
 $target_file = $target_dir . basename($_FILES["filesToUpload"]["name"][$i]);
 $uploadOk = 1;
@@ -74,17 +75,18 @@ if ($uploadOk == 0) {
     }
 
 	//$image = fopen($_FILES['filesToUpload']['tmp_name'], 'rb');    
-    $fullSizeFileName = basename( $_FILES["filesToUpload"]["name"][$i]);
-    $slideshowFileName = 'slideshow'.$fullSizeFileName;
-    $thumbnailFileName = 'thumbnail'.$fullSizeFileName;
+    $fileName = basename( $_FILES["filesToUpload"]["name"][$i]);
+    //$slideshowFileName = 'slideshow'.$fullSizeFileName;
+  //  $thumbnailFileName = 'thumbnail'.$fullSizeFileName;
     
-    $query = "INSERT INTO FullSizePics (fileName, gallery) VALUES (?, ?)";
+    $query = "INSERT INTO Pics (fileName, caption, gallery, picSlug) VALUES (?, ?, ?, ?)";
 	$stmt = $con->prepare( $query );
 
 	//bind the id of the image you want to select
-	$stmt->bindParam(1, $fullSizeFileName);
-	//$stmt->bindParam(2, $_POST["caption"]);
-	$stmt->bindParam(2, $_POST["gallery"]);
+	$stmt->bindParam(1, $fileName);
+	$stmt->bindParam(2, $_POST["caption"]);
+	$stmt->bindParam(3, $_POST["gallery"]);
+	$stmt->bindParam(4, $slug);
 
 
 	$con->beginTransaction();
@@ -93,38 +95,38 @@ if ($uploadOk == 0) {
 	
 	//process image for slideshow and insert info into database
 	try
-{
-// Open the original image
-$image = new Imagick();
-$image->readImage($target_file);
+	{
+	// Open the original image
+	$image = new Imagick();
+	$image->readImage($target_file);
 
-$origSize = $image->getImageGeometry();
-$origWidth = $origSize['width'];
-$origHeight = $origSize['height'];
+	$origSize = $image->getImageGeometry();
+	$origWidth = $origSize['width'];
+	$origHeight = $origSize['height'];
 
-if ($origWidth > $origHeight){
-	if ($origWidth > 1200){
-	 $image->resizeImage(1200, 0, Imagick::FILTER_UNDEFINED, 1);
-	 }
-} else {
-	if ($origHeight > 1200){
-	 $image->resizeImage(0, 1200, Imagick::FILTER_UNDEFINED, 1);
-	 }
-}
+	if ($origWidth >= $origHeight){
+		if ($origWidth > 1200){
+		 $image->resizeImage(1200, 0, Imagick::FILTER_UNDEFINED, 1);
+		 }
+	} else {
+		if ($origHeight > 1200){
+		 $image->resizeImage(0, 1200, Imagick::FILTER_UNDEFINED, 1);
+		 }
+	}
 
-$resizedSize = $image->getImageGeometry();
-$resizedWidth = $resizedSize['width'];
-$resizedHeight = $resizedSize['height'];
+	$resizedSize = $image->getImageGeometry();
+	$resizedWidth = $resizedSize['width'];
+	$resizedHeight = $resizedSize['height'];
 
-// Open the watermark
-$watermark = new Imagick();
-$watermark->readImage('images/watermark_opacity60.png');
-//$watermark->setImageOpacity(0.7);
-// Overlay the watermark on the original image
-//$image->compositeImage($watermark, imagick::COMPOSITE_OVER, 1011, 784);
-$image->compositeImage($watermark, imagick::COMPOSITE_OVER, $resizedWidth-189, $resizedHeight-116);
+	// Open the watermark
+	$watermark = new Imagick();
+	$watermark->readImage('images/watermark_opacity60.png');
+	//$watermark->setImageOpacity(0.7);
+	// Overlay the watermark on the original image
+	//$image->compositeImage($watermark, imagick::COMPOSITE_OVER, 1011, 784);
+	$image->compositeImage($watermark, imagick::COMPOSITE_OVER, $resizedWidth-189, $resizedHeight-116);
 
-/* Create a drawing object and set the font size */
+	/* Create a drawing object and set the font size */
     $draw = new ImagickDraw();
 
     /*** set the font ***/
@@ -138,8 +140,8 @@ $image->compositeImage($watermark, imagick::COMPOSITE_OVER, $resizedWidth-189, $
 
     /*** set gravity to the center ***/
     $draw->setGravity( Imagick::GRAVITY_SOUTHEAST );
-           $draw->setFillOpacity( 0.6 );
- $image->annotateImage( $draw, 22, 24, 0, "voices4earth.org" );
+    $draw->setFillOpacity( 0.6 );
+	$image->annotateImage( $draw, 22, 24, 0, "voices4earth.org" );
     /*** overlay the text on the image ***/
     $draw->setFillColor('white');
        $draw->setFillOpacity( 0.6 );
@@ -147,11 +149,78 @@ $image->compositeImage($watermark, imagick::COMPOSITE_OVER, $resizedWidth-189, $
     
     $image->setImageCompressionQuality(50);
 
+	$target_slideshow_dir = '/Library/WebServer/Documents/Sites/VEJ/slideshowPics/'.$slug;
+
+	if (!file_exists($target_slideshow_dir) && !is_dir($target_slideshow_dir)) {
+  	  mkdir($target_slideshow_dir, 0755);         
+	} 
+
     /*** write image to disk ***/
-    $image->writeImage( '/Library/WebServer/Documents/Sites/VEJ/slideshowPics/'.$slideshowFileName );
+    $image->writeImage( $target_slideshow_dir.'/'.$fileName );
 
-    echo 'Image Created';
+    echo 'Slideshow Image Created <br>';
+   /* 
+    $slideshowQuery = "INSERT INTO SlideshowPics (fileName, caption, gallery) VALUES (?, ?, ?)";
+	$slideshowStmt = $con->prepare( $slideshowQuery );
 
+	//bind the id of the image you want to select
+	$slideshowStmt->bindParam(1, $fileName);
+	$slideshowStmt->bindParam(2, $_POST["caption"]);
+	$slideshowStmt->bindParam(3, $_POST["gallery"]);
+
+
+	$con->beginTransaction();
+	$slideshowStmt->execute();
+	$con->commit();
+	*/
+}
+catch(Exception $e)
+{
+        echo $e->getMessage();
+}
+
+
+	//process image for slideshow and insert info into database
+	try
+	{
+	// Open the original image
+	$thumbImage = new Imagick();
+	$thumbImage->readImage($target_file);
+	
+	$thumbSize = $thumbImage->getImageGeometry();
+	$thumbWidth = $origSize['width'];
+	$thumbHeight = $origSize['height'];
+
+	if ($thumbWidth >= $thumbHeight){
+		 $thumbImage->thumbnailImage( 300, null );
+	} else {
+		 $thumbImage->thumbnailImage( null, 300 );
+	}
+
+	$target_thumbnail_dir = '/Library/WebServer/Documents/Sites/VEJ/thumbnailPics/'.$slug;
+
+	if (!file_exists($target_thumbnail_dir) && !is_dir($target_thumbnail_dir)) {
+  	  mkdir($target_thumbnail_dir, 0755);         
+	} 
+
+    /*** write image to disk ***/
+    $thumbImage->writeImage( $target_thumbnail_dir.'/'.$fileName );
+
+    echo 'Thumbnail Image Created';
+/*    
+    $thumbnailQuery = "INSERT INTO ThumbnailPics (fileName, caption, gallery) VALUES (?, ?, ?)";
+	$thumbnailStmt = $con->prepare( $thumbnailQuery );
+
+	//bind the id of the image you want to select
+	$thumbnailStmt->bindParam(1, $fileName);
+	$thumbnailStmt->bindParam(2, $_POST["caption"]);
+	$thumbnailStmt->bindParam(3, $_POST["gallery"]);
+
+
+	$con->beginTransaction();
+	$thumbnailStmt->execute();
+	$con->commit();
+	*/
 }
 catch(Exception $e)
 {

@@ -76,7 +76,7 @@ if ($title == 'Galleries'){
 		<p>Published: '.$prettyDate.'</p>
 		<div>'.$galleriesRow['Content'].'</div>';
 	
-		$galleryQuery = "select * from VEJ_pics WHERE gallery = ?";
+		$galleryQuery = "select * from Pics WHERE gallery = ?";
 		$galleryStmt = $con->prepare( $galleryQuery );
 
 		//bind the id of the image you want to select
@@ -89,7 +89,7 @@ if ($title == 'Galleries'){
 			<div class="img">';
 				//<a target="_blank" href="uploads/'.$row["fileName"].'">
 				echo '<a target="_blank" href="slideshow.php?filename='.$galleryRow["fileName"].'&gallery='.$galleriesRow['GalleryName'].'">';
-				echo '<img src="uploads/'.$galleryRow["fileName"].'" width="300" />
+				echo '<img src="thumbnailPics/'.$galleryRow["picSlug"].'/'.$galleryRow["fileName"].'" />
 				</a>';
 	
 			if ($galleryRow["caption"]!=NULL){
@@ -108,7 +108,7 @@ if ($title == 'Galleries'){
 echo '<div>'.$content.'</div>';
 
 if ($template == 'Gallery'){
-	$galleryQuery = "select * from VEJ_pics WHERE gallery = ?";
+	$galleryQuery = "select * from SlideshowPics WHERE gallery = ?";
 	$galleryStmt = $con->prepare( $galleryQuery );
 
 //bind the id of the image you want to select
@@ -127,7 +127,7 @@ if( $galleryNum ){
 	<div class="img">';
 		//<a target="_blank" href="uploads/'.$row["fileName"].'">
 		echo '<a target="_blank" href="slideshow.php?filename='.$galleryRow["fileName"].'&gallery='.$galleryName.'">';
-		echo '<img src="uploads/'.$galleryRow["fileName"].'" width="300" />
+		echo '<img src="slideshowPics/'.$galleryRow["fileName"].'" width="300" />
 		</a>';
 	
 	if ($galleryRow["caption"]!=NULL){

@@ -177,7 +177,7 @@ if ($pageRow["Template"]=='Gallery'){
 	//display gallery choices in drop down menu
 	echo 'Select gallery name: <select name="GalleryName">
 		<option value=""></option>';
-	$galleryNameSql = 'SELECT DISTINCT gallery FROM VEJ_pics';
+	$galleryNameSql = 'SELECT DISTINCT gallery FROM Pics';
     foreach ($con->query($galleryNameSql) as $galleryNameRow) {
     	if ($pageRow["GalleryName"]==$galleryNameRow['gallery']){
     		$selected = 'selected';
