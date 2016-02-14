@@ -73,11 +73,7 @@ if( $num ){
 	echo'	<img src="uploads/'.$_GET["filename"].'"/>
 		</a>';
 	echo '<a href="slideshow.php?filename='.$imageArray[$key+1].'&gallery='.$gallery.'">Click for next photo</a>';
-	}
-	
-	
-
-	
+	}	
 	
 }else{
 	//if no image found with the given id,

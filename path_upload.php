@@ -19,7 +19,7 @@
 <section>
 <?php
 include 'db_connect.php';
-$target_dir = "uploads/";
+$target_dir = "/Library/WebServer/Documents/Sites/VEJ/fullSizePics/";
 /*
 if(count($_FILES['filesToUpload']['name'])) {
 	foreach ($_FILES['filesToUpload']['name'] as $file) {
@@ -74,22 +74,89 @@ if ($uploadOk == 0) {
     }
 
 	//$image = fopen($_FILES['filesToUpload']['tmp_name'], 'rb');    
-    $file_name = basename( $_FILES["filesToUpload"]["name"][$i]);
+    $fullSizeFileName = basename( $_FILES["filesToUpload"]["name"][$i]);
+    $slideshowFileName = 'slideshow'.$fullSizeFileName;
+    $thumbnailFileName = 'thumbnail'.$fullSizeFileName;
     
-    $query = "INSERT INTO VEJ_pics (fileName, caption, gallery) VALUES (?, ?, ?)";
+    $query = "INSERT INTO FullSizePics (fileName, gallery) VALUES (?, ?)";
 	$stmt = $con->prepare( $query );
 
-	//$gallery = '12th_earth_day';
-
 	//bind the id of the image you want to select
-	$stmt->bindParam(1, $file_name);
-	$stmt->bindParam(2, $_POST["caption"]);
-	$stmt->bindParam(3, $_POST["gallery"]);
+	$stmt->bindParam(1, $fullSizeFileName);
+	//$stmt->bindParam(2, $_POST["caption"]);
+	$stmt->bindParam(2, $_POST["gallery"]);
 
 
 	$con->beginTransaction();
 	$stmt->execute();
 	$con->commit();
+	
+	//process image for slideshow and insert info into database
+	try
+{
+// Open the original image
+$image = new Imagick();
+$image->readImage($target_file);
+
+$origSize = $image->getImageGeometry();
+$origWidth = $origSize['width'];
+$origHeight = $origSize['height'];
+
+if ($origWidth > $origHeight){
+	if ($origWidth > 1200){
+	 $image->resizeImage(1200, 0, Imagick::FILTER_UNDEFINED, 1);
+	 }
+} else {
+	if ($origHeight > 1200){
+	 $image->resizeImage(0, 1200, Imagick::FILTER_UNDEFINED, 1);
+	 }
+}
+
+$resizedSize = $image->getImageGeometry();
+$resizedWidth = $resizedSize['width'];
+$resizedHeight = $resizedSize['height'];
+
+// Open the watermark
+$watermark = new Imagick();
+$watermark->readImage('images/watermark_opacity60.png');
+//$watermark->setImageOpacity(0.7);
+// Overlay the watermark on the original image
+//$image->compositeImage($watermark, imagick::COMPOSITE_OVER, 1011, 784);
+$image->compositeImage($watermark, imagick::COMPOSITE_OVER, $resizedWidth-189, $resizedHeight-116);
+
+/* Create a drawing object and set the font size */
+    $draw = new ImagickDraw();
+
+    /*** set the font ***/
+    $draw->setFont( "/Library/Fonts/Tahoma.ttf" );
+
+    /*** set the font size ***/
+    $draw->setFontSize( 24 );
+
+    /*** add some transparency ***/
+
+
+    /*** set gravity to the center ***/
+    $draw->setGravity( Imagick::GRAVITY_SOUTHEAST );
+           $draw->setFillOpacity( 0.6 );
+ $image->annotateImage( $draw, 22, 24, 0, "voices4earth.org" );
+    /*** overlay the text on the image ***/
+    $draw->setFillColor('white');
+       $draw->setFillOpacity( 0.6 );
+    $image->annotateImage( $draw, 23, 23, 0, "voices4earth.org" );
+    
+    $image->setImageCompressionQuality(50);
+
+    /*** write image to disk ***/
+    $image->writeImage( '/Library/WebServer/Documents/Sites/VEJ/slideshowPics/'.$slideshowFileName );
+
+    echo 'Image Created';
+
+}
+catch(Exception $e)
+{
+        echo $e->getMessage();
+}
 
 }
 }
