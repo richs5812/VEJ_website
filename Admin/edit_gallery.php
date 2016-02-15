@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../styles.css">
 <title>Voices for Earth Justice - Edit gallery</title>
 <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
 <script>
@@ -13,12 +13,12 @@ function change(){
 <body>
 
 <header>
-<img src="images/voices_logo_color 300.jpg" alt="VEJ logo">
+<img src="../images/voices_logo_color 300.jpg" alt="VEJ logo">
 <h1>Edit Photo</h1>
 </header>
 
 <nav>
-<?php include_once("dynamic_nav.php"); ?>
+<?php include_once("admin_nav.php"); ?>
 </nav>
 
 <section>
@@ -26,7 +26,7 @@ function change(){
 <br />
 <form id="galleryDropDownMenu" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
 <?php
-include 'db_connect.php';
+include '../db_connect.php';
 
 	//start gallery choice dropdown menu
 	echo 'Select gallery name: <select name="GalleryName" onchange="change()">
@@ -58,7 +58,7 @@ include 'db_connect.php';
 			
 			echo '<div class="img"><form action="update_photo" method="post">';
 				//<a target="_blank" href="uploads/'.$row["fileName"].'">
-				echo '<img src="thumbnailPics/'.$galleryRow["picSlug"].'/'.$galleryRow["fileName"].'" />
+				echo '<img src="../thumbnailPics/'.$galleryRow["picSlug"].'/'.$galleryRow["fileName"].'" />
 				</a>';
 	
 			//if ($galleryRow["caption"]!=NULL)

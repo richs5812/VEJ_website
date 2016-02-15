@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../styles.css">
 <title>Voices for Earth Justice - Create/Edit page</title>
 <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -22,12 +22,12 @@
 <body>
 
 <header>
-<img src="images/voices_logo_color 300.jpg" alt="VEJ logo">
+<img src="../images/voices_logo_color 300.jpg" alt="VEJ logo">
 <h1>Create/Edit page</h1>
 </header>
 
 <nav>
-<?php include_once("dynamic_nav.php"); ?>
+<?php include_once("admin_nav.php"); ?>
 </nav>
 
 <section>
@@ -39,7 +39,7 @@
 <option value="">New Page</option>
 
 <?php 
-include 'db_connect.php';
+include '../db_connect.php';
 
 $query = "SELECT page_id, Title FROM Pages ORDER BY Title ASC;";
 $stmt = $con->prepare( $query );
@@ -88,7 +88,7 @@ date_default_timezone_set('America/Detroit');
 
 //$dropDownPath = 'galleryDropDown.php';
 
-include 'db_connect.php';
+//include 'db_connect.php';
 
 $pageQuery = "select * from Pages WHERE page_id = ?";
 $pageStmt = $con->prepare( $pageQuery );
@@ -131,7 +131,8 @@ echo '<input type="hidden" name="page_id" value="' .$pageRow["page_id"]. '" />
     }
     echo '</select><br><br>';
 	//end parent page drop down menu
-	
+	echo '<label for="menuOrder">Menu Order: </label><input type="text" name="menuOrder" id="menuOrder" value="'.$pageRow["MenuOrder"].'" /><br /><br />';
+
 	//display template options in drop down menu
 	echo 'Page Template: <select id="Template" onchange="leaveChange()" name="Template" >';
 	$templageSql = 'SELECT TemplateName FROM Templates';

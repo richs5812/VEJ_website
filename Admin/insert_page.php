@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="en">
 <head>
 <link rel="stylesheet" href="styles.css">
@@ -13,49 +13,22 @@
 </header>
 
 <nav>
-<?php include_once("dynamic_nav.php"); ?>
+<?php include_once("nav.html"); ?>
 </nav>
 
-<section>
+<section>-->
 <?php
-include 'db_connect.php';
-//format dates for MySQL from input format
-date_default_timezone_set('America/Detroit');
-
-$rssDate = ''.date("D, d M Y", strtotime($_POST['pageDate'])).' '.$_POST['pageTimeOfDayHour'].':'.$_POST['pageTimeOfDayMinute'].':00 EST';
-
-if($_POST['pageDate']!=NULL){
-	$sqlFormattedPageDate = date("Y-m-d", strtotime($_POST['pageDate']));
-	} else {
-	$sqlFormattedPageDate = NULL;
-	}
-	
-$slugNoHyphens = str_replace(" - "," ",$_POST["pageTitle"]);
-$strippedSlug = preg_replace("/[^a-zA-Z0-9 ]/", "", $slugNoHyphens);
-$slug = str_replace(" ","-",$strippedSlug);
-
-    
+//include 'db_connect.php';
+/*
 //allow null ParentPage value
 if ($_POST["ParentPage"] == "")
 {
 	$parentPage = NULL;
 } else {
 	$parentPage = $_POST["ParentPage"];
-}
-
-//allow null GalleryName value
-if ($_POST["GalleryName"] == "")
-{
-	$galleryName = NULL;
-} else {
-	$galleryName = $_POST["GalleryName"];
-}
-//figure out whether to insert or update
-if ($_POST['page_id']==""){
-	require_once ('insert_page.php');
-	} else {
-
-$query = "UPDATE Pages SET Title=?, Content=?, ParentPage=?, Slug=?, Template=?, Content2=?, GalleryName=?, pubDate=?, IncludeInNav=?, SqlDate=? WHERE page_id=?";
+}*/
+    
+$query = "INSERT INTO Pages (Title, Content, ParentPage, Slug, Template, Content2, GalleryName, pubDate, IncludeInNav, SqlDate, MenuOrder) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 $stmt = $con->prepare( $query );
 
 $stmt->bindParam(1, $_POST["pageTitle"]);
@@ -68,17 +41,18 @@ $stmt->bindParam(7, $galleryName);
 $stmt->bindParam(8, $rssDate);
 $stmt->bindParam(9, $_POST["includeInNav"]);
 $stmt->bindParam(10, $sqlFormattedPageDate);
-$stmt->bindParam(11, $_POST["page_id"]);
+$stmt->bindParam(11, $menuOrder);
+
 
 $con->beginTransaction();
 if ($stmt->execute() == TRUE) {
-  echo 'Page updated successfully.';
+  echo 'Page created successfully.';
 } else {
 	print_r($stmt->errorInfo());
 }$con->commit();
-}
-?> 
 
+?> 
+<!--
 </section>
 
 <footer>
@@ -87,3 +61,4 @@ Copyright 2015 Voices for Earth Justice, nonprofit 501(c)(3). All Rights Reserve
 
 </body>
 </html>
+-->

@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../styles.css">
 <title>Voices for Earth Justice - Upload Result</title>
 <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
 <header>
-<img src="images/voices_logo_color 300.jpg" alt="VEJ logo">
+<img src="../images/voices_logo_color 300.jpg" alt="VEJ logo">
 <h1>Upload result</h1>
 </header>
 
 <nav>
-<?php include_once("dynamic_nav.php"); ?>
+<?php include_once("admin_nav.php"); ?>
 </nav>
 
 <section>
 <?php
-include 'db_connect.php';
+include '../db_connect.php';
 
 if ($_POST["existingGalleryName"]==""){
 	$galleryName = $_POST["newGalleryName"];

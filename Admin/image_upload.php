@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../styles.css">
 <title>Voices for Earth Justice - Upload</title>
 <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
 <header>
-<img src="images/voices_logo_color 300.jpg" alt="VEJ logo">
+<img src="../images/voices_logo_color 300.jpg" alt="VEJ logo">
 <h1>Upload Image(s)</h1>
 </header>
 
 <nav>
-<?php include_once("dynamic_nav.php"); ?>
+<?php include_once("admin_nav.php"); ?>
 </nav>
 
 <section>
 
-<form action="path_upload.php" method="post" enctype="multipart/form-data"><br />
+<form action="image_process.php" method="post" enctype="multipart/form-data"><br />
     Select image to upload:
    <!-- <input type="file" name="fileToUpload" id="fileToUpload" multiple><br /><br />-->
    <input name="filesToUpload[]" id="filesToUpload" type="file" multiple="" /><br /><br />
 	Create New Gallery: <input type="text" name="newGalleryName" id="gallery" value="" size="50"><br /><br />
 <?php   	//display gallery choices in drop down menu
+	include '../db_connect.php';
 	echo 'or add to existing gallery: <select id="existingGalleryName" name="existingGalleryName"">
 		<option value=""></option>';
 	$galleryNameSql = 'SELECT DISTINCT gallery FROM Pics';
