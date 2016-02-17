@@ -11,7 +11,8 @@ if (!isset($_GET['Slug']))
 	$slug = $_GET['Slug'];
 }
 
-$query = "select Title, Content, Content2, Template, GalleryName from Pages WHERE Slug = ?";
+
+$query = "select Title, Content, Content2, Template, GalleryName, pageType from Pages WHERE Slug = ?";
 $stmt = $con->prepare( $query );
 
 $stmt->bindParam(1, $slug);

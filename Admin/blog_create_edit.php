@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <link rel="stylesheet" href="../styles.css">
-<title>Voices for Earth Justice - Create/Edit page</title>
+<title>Voices for Earth Justice - Create/Edit post</title>
 <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- date picker-->
@@ -23,7 +23,7 @@
 
 <header>
 <img src="../images/voices_logo_color 300.jpg" alt="VEJ logo">
-<h1>Create/Edit page</h1>
+<h1>Create/Edit post</h1>
 </header>
 
 <nav>
@@ -36,12 +36,12 @@
 <br />
 <form id="dropDownMenu" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
 <select class="dropDown" name="page_id" onchange="change()">
-<option value="">New Page</option>
+<option value="">New Post</option>
 
 <?php 
 include '../db_connect.php';
 
-$query = "SELECT page_id, Title FROM Pages WHERE pageType = 'Page' ORDER BY Title ASC;";
+$query = "SELECT page_id, Title, pubDate FROM Pages WHERE pageType = 'Post' ORDER BY SqlDate DESC;";
 $stmt = $con->prepare( $query );
 
 $con->beginTransaction();
@@ -58,7 +58,7 @@ if( $num ){
     	}else{
     		$selected = "";
     		}
-        echo '<option value="'. $dropDownRow['page_id'] .'" '.$selected.' >'. $dropDownRow['Title'] .'</option>';
+        echo '<option value="'. $dropDownRow['page_id'] .'" '.$selected.' >'.$dropDownRow['pubDate'].' - '. $dropDownRow['Title'] .'</option>';
 
 	}
 	
@@ -114,11 +114,11 @@ if (!isset ($pageRow["page_id"])){
 }
 
 echo '<input type="hidden" name="page_id" value="' .$pageRow["page_id"]. '" />
-<input type="hidden" name="pageType" value="Page" />
-<label for="pageTitle">Page Title: </label><input type="text" name="pageTitle" id="pageTitle" value="'.$pageRow["Title"].'" /><br /><br />';
+<input type="hidden" name="pageType" value="Post" />
+<label for="pageTitle">Post Title: </label><input type="text" name="pageTitle" id="pageTitle" value="'.$pageRow["Title"].'" /><br /><br />';
 
 //display parent page in drop down menu
-	echo 'Parent Page: <select name="ParentPage">
+	/*echo 'Parent Page: <select name="ParentPage">
 			<option value="">No Parent</option>';
 	$parentPageSql = 'SELECT page_id, ParentPage, Title FROM Pages';
     foreach ($con->query($parentPageSql) as $parentPageRow) {
@@ -130,11 +130,11 @@ echo '<input type="hidden" name="page_id" value="' .$pageRow["page_id"]. '" />
         echo '<option value='.$parentPageRow['page_id'].' '.$selected.'>'.$parentPageRow['Title'].'</option>';
     }
     echo '</select><br><br>';
-	//end parent page drop down menu
-	echo '<label for="menuOrder">Menu Order: </label><input type="text" name="menuOrder" id="menuOrder" value="'.$pageRow["MenuOrder"].'" /><br /><br />';
+	//end parent page drop down menu*/
+	//echo '<label for="menuOrder">Menu Order: </label><input type="text" name="menuOrder" id="menuOrder" value="'.$pageRow["MenuOrder"].'" /><br /><br />';
 
 	//display template options in drop down menu
-	echo 'Page Template: <select id="Template" onchange="leaveChange()" name="Template" >';
+	echo 'Post Template: <select id="Template" onchange="leaveChange()" name="Template" >';
 	$templageSql = 'SELECT TemplateName FROM Templates';
     foreach ($con->query($templageSql) as $templateRow) {
     	if ($pageRow["Template"]==$templateRow['TemplateName']){
@@ -146,7 +146,7 @@ echo '<input type="hidden" name="page_id" value="' .$pageRow["page_id"]. '" />
     }
     echo '</select><br><br>';
 	//end template options drop down menu
-	
+	/*
     if ($pageRow['IncludeInNav']!='1'){
 	echo '<label for="includeInNav">Include in Navigation Menu: </label>
 			<input type="hidden" name="includeInNav" value="0" />
@@ -156,7 +156,7 @@ echo '<input type="hidden" name="page_id" value="' .$pageRow["page_id"]. '" />
 			<input type="hidden" name="includeInNav" value="0" />
 			<input type="checkbox" name="includeInNav" id="includeInNav" value="1" checked/><br><br>';
 }	
-
+*/
 	
 echo '<label for="pageDatePicker">'.$published.' Date: </label><input type="text" name="pageDate" id="pageDatePicker" value="'.$pageDate.'">';
 
@@ -164,7 +164,7 @@ echo '<label for="pageTimeOfDayHour">Time of Day: Hour (0-24): </label><input ty
 
 echo '<label for="pageTimeOfDayMinute">Minute: </label><input type="text" name="pageTimeOfDayMinute" id="pageTimeOfDayMinute" value="'.$pageMinute.'"><br><br>';
 
-echo '<label for="pageContent">Page Content: </label><textarea id="pageContent" name="pageContent" rows="20" cols="120" >'.$pageRow["Content"].'</textarea><br><br>';
+echo '<label for="pageContent">Post Content: </label><textarea id="pageContent" name="pageContent" rows="20" cols="120" >'.$pageRow["Content"].'</textarea><br><br>';
 
 //echo '<div id="message"></div>';
 
@@ -190,14 +190,14 @@ if ($pageRow["Template"]=='Gallery'){
     echo '</select><br><br>';
 	//end gallery choice drop down menu
 	
-	echo'<label for="pageContentDos">Page Content Block 2: </label><textarea id="pageContentDos" name="pageContentDos" rows="10" cols="120" >'.$content2.'</textarea><br><br></div>';
+	echo'<label for="pageContentDos">Post Content Block 2: </label><textarea id="pageContentDos" name="pageContentDos" rows="10" cols="120" >'.$content2.'</textarea><br><br></div>';
 	echo '</div>';
 
 if ($_POST["page_id"] == ""){
-	echo '<br /><br /><input type="submit" value="Create Page"/>';
+	echo '<br /><br /><input type="submit" value="Publish Post"/>';
 } else {
-	echo '<label for="pageSlug">Page Slug for Link: </label><input type="text" name="pageSlug" id="pageSlug" value="'.$pageRow["Slug"].'" /><br /><br />
-<input type="submit" value="Update Page"/>';
+	echo '<label for="pageSlug">Post Slug for Link: </label><input type="text" name="pageSlug" id="pageSlug" value="'.$pageRow["Slug"].'" /><br /><br />
+<input type="submit" value="Update Post"/>';
 }
 ?>
 <script>

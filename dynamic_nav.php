@@ -75,5 +75,6 @@ for($x = 0; $x < $parentArrLength; $x++) {
 }
 
 ?>
-    
+      <li class="nav"><a href="blog.php">Blog</a></li>    
+  
 </ul>
