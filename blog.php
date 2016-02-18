@@ -4,7 +4,8 @@
 <head>
 <base href="/Sites/VEJ/">
 <link rel="stylesheet" href="styles.css">
-<title>Voices for Earth Justice - <?php echo $title; ?></title>
+<link href="http://localhost/Sites/VEJ/feeds/blogFeed.php" rel="alternate" type="application/rss+xml" title="Voices for Earth Justice: Latest Blog Posts" />
+<title>Voices for Earth Justice - Blog</title>
 <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -37,7 +38,7 @@ if (!isset($_GET['Slug']))
 $query = "select Title, Content, Content2, Template, GalleryName, Slug from Pages WHERE pageType = 'Post' ORDER BY SqlDate DESC";
 $stmt = $con->prepare( $query );
 
-$stmt->bindParam(1, $slug);
+//$stmt->bindParam(1, $slug);
 $stmt->execute();
 
 $num = $stmt->rowCount();
