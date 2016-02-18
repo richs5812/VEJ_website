@@ -47,9 +47,9 @@ if ($stmt->execute() == TRUE) {
 
 	$con->beginTransaction();
 	if ($stmt->execute() == TRUE) {
-		unlink('slideshowPics/'.$_POST["picSlug"].'/'.$_POST["fileName"].'');
-		unlink('fullSizePics/'.$_POST["picSlug"].'/'.$_POST["fileName"].'');
-		unlink('thumbnailPics/'.$_POST["picSlug"].'/'.$_POST["fileName"].'');
+		unlink('../slideshowPics/'.$_POST["picSlug"].'/'.$_POST["fileName"].'');
+		unlink('../fullSizePics/'.$_POST["picSlug"].'/'.$_POST["fileName"].'');
+		unlink('../thumbnailPics/'.$_POST["picSlug"].'/'.$_POST["fileName"].'');
 	  echo 'Photo deleted.';
 	} else {
 		print_r($stmt->errorInfo());

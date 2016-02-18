@@ -18,16 +18,16 @@
 		//$detailsTable = "Pages";
 		//$this->dbConnect($detailsTable);
 		include "db_connect.php";
-		$query = "SELECT Title, Content, Slug, pubDate FROM Pages WHERE pageType = 'Post'";
+		$query = "SELECT fileName, gallery, caption, picSlug, pubDate FROM Pics";
 		$stmt = $con->prepare( $query );
 		$stmt->execute();
-		while ($pageRow = $stmt->fetch(PDO::FETCH_ASSOC)){
+		while ($picRow = $stmt->fetch(PDO::FETCH_ASSOC)){
 			$details = '<?xml version="1.0" encoding="ISO-8859-1" ?>
     <rss version="2.0">
      <channel>
-      <title>Voices for Earth Justice: Latest Blog Posts</title>
+      <title>Voices for Earth Justice: Latest Photos</title>
       <link>http://www.voices4earth.org</link>
-      <description>Latest blog posts by Voices for Earth Justice.</description>';
+      <description>Latest photos by Voices for Earth Justice.</description>';
 		}
 		return $details;
 		$con = NULL;
@@ -42,14 +42,14 @@
 		$result = mysql_db_query (DB_NAME, $query, LINK);
 		while($row = mysql_fetch_array($result))
 		{*/
-		$query = "SELECT Title, Content, Slug, pubDate FROM Pages WHERE pageType = 'Post'";
+		$query = "SELECT fileName, gallery, caption, picSlug, pubDate FROM Pics";
 		$stmt = $con->prepare( $query );
 		$stmt->execute();
 		while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 			$items .= '<item>
-				<title>'. $row["Title"] .'</title>
-				<link>http://localhost/Sites/VEJ/'. $row["Slug"] .'</link>
-				<description><![CDATA['. $row["Content"] .']]></description>
+				<title>'. $row["gallery"] .'</title>
+				<link>http://localhost/Sites/VEJ/</link>
+				<description><![CDATA[<figure><img src="http://localhost/Sites/VEJ/slideshowPics/'.$row["picSlug"].'/'.$row["fileName"].'" /><figcaption>'.$row["caption"].'</figcaption></figure>]]></description>
 				<pubDate>'. $row["pubDate"] .'</pubDate>
 			</item>';
 		}
@@ -59,4 +59,8 @@
 		$con = NULL;
 	}
 }
+/*<image>
+					<url>http://localhost/Sites/VEJ/thumbnailPics/'.$row["picSlug"].'/'.$row["fileName"].'</url>
+					<title>'.$row["fileName"].'</title>
+					<link>http://www.voices4earth.org</link>*/
 ?>

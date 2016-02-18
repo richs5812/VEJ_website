@@ -84,8 +84,8 @@ if ($uploadOk == 0) {
     $fileName = basename( $_FILES["filesToUpload"]["name"][$i]);
     //$slideshowFileName = 'slideshow'.$fullSizeFileName;
   //  $thumbnailFileName = 'thumbnail'.$fullSizeFileName;
-    
-    $query = "INSERT INTO Pics (fileName, caption, gallery, picSlug) VALUES (?, ?, ?, ?)";
+    $pubDate = date('D, d M Y H:i:s T');
+    $query = "INSERT INTO Pics (fileName, caption, gallery, picSlug, pubDate) VALUES (?, ?, ?, ?, ?)";
 	$stmt = $con->prepare( $query );
 
 	//bind the id of the image you want to select
@@ -93,6 +93,7 @@ if ($uploadOk == 0) {
 	$stmt->bindParam(2, $_POST["caption"]);
 	$stmt->bindParam(3, $galleryName);
 	$stmt->bindParam(4, $slug);
+	$stmt->bindParam(5, $pubDate);
 
 
 	$con->beginTransaction();
@@ -126,7 +127,7 @@ if ($uploadOk == 0) {
 
 	// Open the watermark
 	$watermark = new Imagick();
-	$watermark->readImage('images/watermark_opacity60.png');
+	$watermark->readImage('../images/watermark_opacity60.png');
 	//$watermark->setImageOpacity(0.7);
 	// Overlay the watermark on the original image
 	//$image->compositeImage($watermark, imagick::COMPOSITE_OVER, 1011, 784);

@@ -45,6 +45,7 @@ if( $num ){
 <base href="/Sites/VEJ/">
 <link rel="stylesheet" href="styles.css">
 <link href="http://localhost/Sites/VEJ/feeds/blogFeed.php" rel="alternate" type="application/rss+xml" title="Voices for Earth Justice: Latest Blog Posts" />
+<link href="http://localhost/Sites/VEJ/feeds/photoFeed.php" rel="alternate" type="application/rss+xml" title="Voices for Earth Justice: Latest Photos" />
 <title>Voices for Earth Justice - <?php echo $title; ?></title>
 <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
 </head>

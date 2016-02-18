@@ -5,6 +5,7 @@
 <base href="/Sites/VEJ/">
 <link rel="stylesheet" href="styles.css">
 <link href="http://localhost/Sites/VEJ/feeds/blogFeed.php" rel="alternate" type="application/rss+xml" title="Voices for Earth Justice: Latest Blog Posts" />
+<link href="http://localhost/Sites/VEJ/feeds/photoFeed.php" rel="alternate" type="application/rss+xml" title="Voices for Earth Justice: Latest Photos" />
 <title>Voices for Earth Justice - Blog</title>
 <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -76,7 +77,7 @@ if( $galleryNum ){
 	<div class="img">';
 		//<a target="_blank" href="uploads/'.$row["fileName"].'">
 		echo '<a target="_blank" href="slideshow.php?filename='.$galleryRow["fileName"].'&gallery='.$galleryName.'">';
-		echo '<img src="slideshowPics/'.$galleryRow["picSlug"].'/'.$galleryRow["fileName"].'" width="300" />
+		echo '<img src="thumbnailPics/'.$galleryRow["picSlug"].'/'.$galleryRow["fileName"].'" width="300" />
 		</a>';
 	
 	if ($galleryRow["caption"]!=NULL){
